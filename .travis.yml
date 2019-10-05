@@ -1,0 +1,11 @@
+language: C
+
+services:
+  - docker
+
+before_install:
+  - docker pull squidboylan/aos
+  - make docker-build
+
+script:
+  - echo "NO TESTS YET"
