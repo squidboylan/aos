@@ -11,7 +11,7 @@ all: $(KERNBIN)
 $(KERNBIN): $(OBJ)
 	$(LD) -T $(LDSCRIPT) -o $@ $^
 
-.PHONY: clean qemu qemu-gdb
+.PHONY: clean docker-image docker-qemu docker-build docker-qemu-gdb docker-gdb qemu qemu-gdb
 clean:
 	@rm -f $(OBJ) $(KERNBIN)
 
@@ -27,3 +27,23 @@ qemu: all
 
 qemu-gdb: all
 	$(QEMU) $(QEMUOPTS) -s -S
+
+# Build the docker image
+docker-image:
+	@docker rmi cc-aarch64 ; docker build . -t cc-aarch64
+
+# Run make all inside a docker container
+docker-build:
+	@docker run --rm --user $$(id -u) -v "$$(pwd)":/home/user/source -w /home/user/source cc-aarch64 make all
+
+# Run qemu in a docker container
+# This is necessary because only very new qemu has the raspi3 machine available
+docker-qemu:
+	@docker run --rm --user $$(id -u) -v "$$(pwd)":/home/user/source -w /home/user/source -e DISPLAY=$${DISPLAY} -it -v /tmp/.X11-unix:/tmp/.X11-unix cc-aarch64 make qemu
+
+docker-qemu-gdb:
+	@docker run --rm --user $$(id -u) -v "$$(pwd)":/home/user/source -w /home/user/source -e DISPLAY=$${DISPLAY} -it -v /tmp/.X11-unix:/tmp/.X11-unix cc-aarch64 make qemu-gdb
+
+# Find the docker container running qemu and run gdb in it
+docker-gdb:
+	@docker exec -it $$(docker ps | grep "make qemu" | awk '{print $$1}') aarch64-elf-gdb
