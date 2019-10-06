@@ -18,14 +18,14 @@ RUN wget http://ftpmirror.gnu.org/binutils/binutils-2.30.tar.gz \
     --disable-libunwind-exceptions --enable-clocale=gnu --disable-libstdcxx-pch --disable-libssp --enable-plugin \
     --disable-linker-build-id --enable-lto --enable-install-libiberty --with-linker-hash-style=gnu --with-gnu-ld\
     --enable-gnu-indirect-function --disable-multilib --disable-werror --enable-checking=release --enable-default-pie \
-    --enable-default-ssp --enable-gnu-unique-object && make -j16 && make install && make clean && cd .. \
+    --enable-default-ssp --enable-gnu-unique-object && make -j8 && make install && make clean && cd .. \
     && mkdir aarch64-gcc && cd aarch64-gcc && ../gcc-*/configure --prefix=/usr/local/cross-compiler --target=aarch64-elf --enable-languages=c \
     --enable-shared --enable-threads=posix --enable-libmpx --with-system-zlib --with-isl --enable-__cxa_atexit \
     --disable-libunwind-exceptions --enable-clocale=gnu --disable-libstdcxx-pch --disable-libssp --enable-plugin \
     --disable-linker-build-id --enable-lto --enable-install-libiberty --with-linker-hash-style=gnu --with-gnu-ld\
     --enable-gnu-indirect-function --disable-multilib --disable-werror --enable-checking=release --enable-default-pie \
-    --enable-default-ssp --enable-gnu-unique-object && make -j16 all-gcc && make install-gcc && make clean && cd .. \
-    && rm -rf /binutils-* /gcc-*
+    --enable-default-ssp --enable-gnu-unique-object && make -j8 all-gcc && make install-gcc && make clean && cd .. \
+    && rm -rf /binutils-* /gcc-* /isl-* /mpfr-* /gmp-* /mpc-* /cloog-*
 
 RUN wget http://gnu.mirrors.hoobly.com/gdb/gdb-8.3.1.tar.gz \
     && tar -xzf gdb-8.3.1.tar.gz && cd gdb* && ./configure --target=aarch64-elf \
