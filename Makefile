@@ -30,19 +30,19 @@ qemu-gdb: all
 
 # Build the docker image
 docker-image:
-	@docker rmi cc-aarch64 ; docker build . -t cc-aarch64
+	@docker rmi squidboylan/aos ; docker build . -t squidboylan/aos
 
 # Run make all inside a docker container
 docker-build:
-	@docker run --rm --user $$(id -u) -v "$$(pwd)":/home/user/source -w /home/user/source cc-aarch64 make all
+	@docker run --rm --user $$(id -u) -v "$$(pwd)":/home/user/source -w /home/user/source squidboylan/aos make all
 
 # Run qemu in a docker container
 # This is necessary because only very new qemu has the raspi3 machine available
 docker-qemu:
-	@docker run --rm --user $$(id -u) -v "$$(pwd)":/home/user/source -w /home/user/source -e DISPLAY=$${DISPLAY} -it -v /tmp/.X11-unix:/tmp/.X11-unix cc-aarch64 make qemu
+	@docker run --rm --user $$(id -u) -v "$$(pwd)":/home/user/source -w /home/user/source -e DISPLAY=$${DISPLAY} -it -v /tmp/.X11-unix:/tmp/.X11-unix squidboylan/aos make qemu
 
 docker-qemu-gdb:
-	@docker run --rm --user $$(id -u) -v "$$(pwd)":/home/user/source -w /home/user/source -e DISPLAY=$${DISPLAY} -it -v /tmp/.X11-unix:/tmp/.X11-unix cc-aarch64 make qemu-gdb
+	@docker run --rm --user $$(id -u) -v "$$(pwd)":/home/user/source -w /home/user/source -e DISPLAY=$${DISPLAY} -it -v /tmp/.X11-unix:/tmp/.X11-unix squidboylan/aos make qemu-gdb
 
 # Find the docker container running qemu and run gdb in it
 docker-gdb:
