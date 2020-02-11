@@ -4,8 +4,6 @@
  * Thank you!
  */
 
-.section ".text.boot"
-
 .global _start
 
 _start:
@@ -41,7 +39,9 @@ begin_setup:
 
 	/* Load the bss (refer to linker script to see where these are) */
 	ldr     x1, =__bss_start
-	ldr     w2, =__bss_size
+	ldr     w2, =__bss_end
+	subs    w2, w2, w1
+
 
 clear_bss:
 	/* Global variables live in the bss section, and therefore we must zero it

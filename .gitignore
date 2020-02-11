@@ -1,2 +1,6 @@
 *.o
 kernel.elf
+target
+kernel
+kernel8.img
+Cargo.lock
